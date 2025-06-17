@@ -1,80 +1,127 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const newTaskInput = document.getElementById('new-task');
-    const addTaskButton = document.getElementById('add-task');
-    const tasksContainer = document.getElementById('tasks-container');
+    const form = document.getElementById('todo-form');
+    const input = document.getElementById('todo-input');
+    const list = document.getElementById('todo-list');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const counter = document.getElementById('todo-counter');
+    const clearBtn = document.getElementById('clear-completed');
+    const empty = document.getElementById('todo-empty');
 
-    // Загрузка сохраненных задач
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+    let filter = 'all';
 
-    // Функция для сохранения задач
-    function saveTasks() {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+    function saveTodos() {
+        localStorage.setItem('todos', JSON.stringify(todos));
     }
 
-    // Функция для создания элемента задачи
-    function createTaskElement(task) {
-        const taskElement = document.createElement('div');
-        taskElement.className = `task-item flex items-center p-3 bg-white rounded-lg shadow-sm border border-gray-200 ${task.completed ? 'opacity-50' : ''}`;
-        taskElement.innerHTML = `
-            <input type="checkbox" class="task-checkbox mr-3 h-5 w-5" ${task.completed ? 'checked' : ''}>
-            <span class="task-text flex-1 ${task.completed ? 'line-through text-gray-500' : ''}">${task.text}</span>
-            <button class="delete-task p-1 text-gray-400 hover:text-red-500 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                </svg>
-            </button>
-        `;
+    function renderTodos() {
+        list.innerHTML = '';
+        let shown = 0;
+        todos.forEach((todo, idx) => {
+            if (
+                (filter === 'active' && todo.completed) ||
+                (filter === 'completed' && !todo.completed)
+            ) return;
+            shown++;
+            const li = document.createElement('li');
+            li.className = 'flash-task' + (todo.completed ? ' completed' : '');
 
-        // Обработчик для чекбокса
-        const checkbox = taskElement.querySelector('.task-checkbox');
-        checkbox.addEventListener('change', () => {
-            task.completed = checkbox.checked;
-            taskElement.classList.toggle('opacity-50');
-            taskElement.querySelector('.task-text').classList.toggle('line-through');
-            taskElement.querySelector('.task-text').classList.toggle('text-gray-500');
-            saveTasks();
-        });
+            const row = document.createElement('div');
+            row.className = 'task-row';
 
-        // Обработчик для кнопки удаления
-        const deleteButton = taskElement.querySelector('.delete-task');
-        deleteButton.addEventListener('click', () => {
-            tasks = tasks.filter(t => t !== task);
-            taskElement.remove();
-            saveTasks();
-        });
-
-        return taskElement;
-    }
-
-    // Функция для добавления новой задачи
-    function addTask(text) {
-        if (text.trim()) {
-            const task = {
-                text: text.trim(),
-                completed: false,
-                id: Date.now()
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'task-checkbox';
+            checkbox.title = 'Отметить выполненным';
+            checkbox.checked = !!todo.completed;
+            checkbox.onchange = () => {
+                todo.completed = checkbox.checked;
+                saveTodos();
+                renderTodos();
             };
-            tasks.push(task);
-            tasksContainer.appendChild(createTaskElement(task));
-            saveTasks();
-            newTaskInput.value = '';
+
+            const title = document.createElement('span');
+            title.className = 'task-title';
+            title.textContent = todo.text;
+            title.title = 'Двойной клик — редактировать';
+            title.ondblclick = () => startEdit(idx, title);
+
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-btn';
+            delBtn.textContent = '✕';
+            delBtn.title = 'Удалить';
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                todos.splice(idx, 1);
+                saveTodos();
+                renderTodos();
+            };
+
+            row.appendChild(checkbox);
+            row.appendChild(title);
+            row.appendChild(delBtn);
+            li.appendChild(row);
+            list.appendChild(li);
+        });
+        empty.style.display = shown === 0 ? 'block' : 'none';
+        updateCounter();
+    }
+
+    function updateCounter() {
+        const total = todos.length;
+        const completed = todos.filter(t => t.completed).length;
+        counter.textContent = total === 0 ? '0 задач' : `${total} задач, выполнено: ${completed}`;
+    }
+
+    function startEdit(idx, titleEl) {
+        const todo = todos[idx];
+        const inputEdit = document.createElement('input');
+        inputEdit.type = 'text';
+        inputEdit.value = todo.text;
+        inputEdit.className = 'task-edit-input';
+        inputEdit.onkeydown = (e) => {
+            if (e.key === 'Enter') finishEdit();
+            if (e.key === 'Escape') cancelEdit();
+        };
+        inputEdit.onblur = finishEdit;
+        titleEl.replaceWith(inputEdit);
+        inputEdit.focus();
+        function finishEdit() {
+            const val = inputEdit.value.trim();
+            if (val) todo.text = val;
+            saveTodos();
+            renderTodos();
+        }
+        function cancelEdit() {
+            renderTodos();
         }
     }
 
-    // Обработчик для кнопки добавления
-    addTaskButton.addEventListener('click', () => {
-        addTask(newTaskInput.value);
-    });
-
-    // Обработчик для Enter в поле ввода
-    newTaskInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            addTask(newTaskInput.value);
+    form.onsubmit = (e) => {
+        e.preventDefault();
+        const value = input.value.trim();
+        if (value) {
+            todos.push({ text: value, completed: false });
+            saveTodos();
+            renderTodos();
+            input.value = '';
         }
+    };
+
+    filterBtns.forEach(btn => {
+        btn.onclick = () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filter = btn.dataset.filter;
+            renderTodos();
+        };
     });
 
-    // Загрузка существующих задач
-    tasks.forEach(task => {
-        tasksContainer.appendChild(createTaskElement(task));
-    });
+    clearBtn.onclick = () => {
+        todos = todos.filter(t => !t.completed);
+        saveTodos();
+        renderTodos();
+    };
+
+    renderTodos();
 }); 

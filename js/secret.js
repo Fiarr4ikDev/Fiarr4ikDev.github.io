@@ -1,38 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const secretToggle = document.getElementById('secret-toggle');
-    const mainContent = document.getElementById('main-content');
-    const placeholderContent = document.getElementById('placeholder-content');
-    let isSecretMode = true;
+    const secretBtn = document.getElementById('secret-btn');
+    const modal = document.getElementById('cheats-modal');
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (!secretBtn || !modal || !backdrop) return;
 
-    // Добавляем обработчик нажатия клавиш
-    document.addEventListener('keydown', (e) => {
-        // Проверяем комбинацию Ctrl + Shift + S
-        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 's') {
-            toggleContent();
-        }
+    secretBtn.addEventListener('click', (e) => {
+        modal.classList.remove('hidden');
+        renderCheats();
     });
 
-    // Добавляем обработчик клика по кнопке
-    secretToggle.addEventListener('click', () => {
-        toggleContent();
-    });
-
-    function toggleContent() {
-        isSecretMode = !isSecretMode;
-        
-        if (isSecretMode) {
-            mainContent.classList.add('hidden');
-            placeholderContent.classList.remove('hidden');
-            secretToggle.classList.add('active');
-        } else {
-            mainContent.classList.remove('hidden');
-            placeholderContent.classList.add('hidden');
-            secretToggle.classList.remove('active');
-        }
+    function closeModal() {
+        modal.classList.add('hidden');
     }
 
-    // Устанавливаем начальное состояние блоков и кнопки
-    mainContent.classList.add('hidden');
-    placeholderContent.classList.remove('hidden');
-    secretToggle.classList.add('active');
+    backdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (e) => {
+        if (!modal.classList.contains('hidden') && e.key === 'Escape') closeModal();
+    });
 }); 
