@@ -1,0 +1,458 @@
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap');
+
+html {
+    font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif;
+}
+
+.content-hidden { 
+    display: none; 
+}
+
+.content-block { 
+    display: block; 
+    animation: fadeLift 0.3s ease-out; 
+}
+
+/* Основные стили */
+:root {
+    --ios-primary: #007AFF;
+    --ios-secondary: #5856D6;
+    --ios-success: #34C759;
+    --ios-warning: #FF9500;
+    --ios-error: #FF3B30;
+    --ios-background: #F2F2F7;
+    --ios-card: rgba(255, 255, 255, 0.8);
+    --ios-border: rgba(0, 0, 0, 0.1);
+    --ios-text: #000000;
+    --ios-text-secondary: #8E8E93;
+    --ios-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --ios-blur: blur(20px);
+}
+
+/* Темная тема */
+.dark {
+    --ios-primary: #0A84FF;
+    --ios-secondary: #5E5CE6;
+    --ios-success: #30D158;
+    --ios-warning: #FF9F0A;
+    --ios-error: #FF453A;
+    --ios-background: #000000;
+    --ios-card: rgba(28, 28, 30, 0.8);
+    --ios-border: rgba(255, 255, 255, 0.1);
+    --ios-text: #FFFFFF;
+    --ios-text-secondary: #8E8E93;
+    --ios-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+body {
+    background: var(--ios-background);
+    color: var(--ios-text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Карточки */
+.card-ios {
+    background: var(--ios-card);
+    backdrop-filter: var(--ios-blur);
+    -webkit-backdrop-filter: var(--ios-blur);
+    border: 1px solid var(--ios-border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--ios-shadow);
+}
+
+.card-ios:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.card-ios h3 {
+    color: var(--ios-text);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+}
+
+/* Код */
+pre {
+    background: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: var(--ios-blur);
+    -webkit-backdrop-filter: var(--ios-blur);
+    border-radius: 12px;
+    padding: 16px !important;
+    margin: 16px 0;
+    border: 1px solid var(--ios-border);
+}
+
+code {
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+}
+
+/* Кнопка копирования */
+.copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--ios-card);
+    backdrop-filter: var(--ios-blur);
+    -webkit-backdrop-filter: var(--ios-blur);
+    color: var(--ios-text);
+    border: 1px solid var(--ios-border);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--ios-shadow);
+}
+
+.copy-btn:hover {
+    background: var(--ios-primary);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.copy-btn.copied {
+    background: var(--ios-success);
+    color: white;
+    border-color: var(--ios-success);
+    transform: scale(1.05);
+}
+
+/* Поиск */
+.search-container {
+    position: relative;
+    width: 300px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-container:focus-within {
+    width: 400px;
+}
+
+#search {
+    width: 100%;
+    padding: 12px 16px 12px 40px;
+    border: none;
+    border-radius: 10px;
+    background: var(--ios-card);
+    backdrop-filter: var(--ios-blur);
+    -webkit-backdrop-filter: var(--ios-blur);
+    color: var(--ios-text);
+    font-size: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--ios-shadow);
+}
+
+#search:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--ios-primary);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--ios-text-secondary);
+    pointer-events: none;
+}
+
+/* Кнопка темы */
+#theme-toggle {
+    background: var(--ios-card);
+    backdrop-filter: var(--ios-blur);
+    -webkit-backdrop-filter: var(--ios-blur);
+    border: none;
+    color: var(--ios-text);
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--ios-shadow);
+}
+
+#theme-toggle:hover {
+    background: var(--ios-primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Кнопка "Наверх" */
+.scroll-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--ios-primary);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--ios-shadow);
+    border: none;
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.content-block {
+    animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Подсветка синтаксиса */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #6b7280;
+}
+
+.token.punctuation {
+    color: #e5e7eb;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+    color: #60a5fa;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+    color: #34d399;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #fbbf24;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #f472b6;
+}
+
+.token.function {
+    color: #818cf8;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #f87171;
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+    .search-container {
+        width: 100%;
+    }
+    
+    .search-container:focus-within {
+        width: 100%;
+    }
+    
+    .card-ios {
+        margin: 10px;
+        border-radius: 12px;
+    }
+    
+    #theme-toggle {
+        padding: 10px;
+    }
+    
+    .scroll-to-top {
+        bottom: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Дополнительные стили для темной темы */
+.dark {
+    color-scheme: dark;
+}
+
+.dark pre {
+    background-color: #1a1a1a;
+    border-color: #2d2d2d;
+}
+
+.dark code {
+    color: #e2e8f0;
+}
+
+.dark .highlight {
+    background-color: #2c5282;
+}
+
+.dark header {
+    background-color: #1a202c;
+    border-bottom: 1px solid #2d3748;
+}
+
+.dark footer {
+    background-color: #1a202c;
+    border-top: 1px solid #2d3748;
+}
+
+.dark .search-container input {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.dark .search-container input:focus {
+    background-color: #2d3748;
+    border-color: #63b3ed;
+}
+
+.dark .search-container .search-icon {
+    color: #a0aec0;
+}
+
+.dark .search-container .clear-btn {
+    color: #a0aec0;
+}
+
+.dark .search-container .clear-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+}
+
+/* Анимации для темной темы */
+body.dark * {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Темная тема */
+body.dark {
+    background-color: #1a202c;
+    color: #e2e8f0;
+}
+
+body.dark .bg-white {
+    background-color: #1a202c;
+}
+
+body.dark .text-gray-900 {
+    color: #e2e8f0;
+}
+
+body.dark .text-gray-700 {
+    color: #cbd5e0;
+}
+
+body.dark .text-gray-600 {
+    color: #a0aec0;
+}
+
+body.dark .text-gray-400 {
+    color: #718096;
+}
+
+body.dark .border-gray-200 {
+    border-color: #2d3748;
+}
+
+body.dark .border-gray-800 {
+    border-color: #4a5568;
+}
+
+body.dark .bg-gray-50 {
+    background-color: #1a202c;
+}
+
+body.dark .bg-gray-100 {
+    background-color: #2d3748;
+}
+
+body.dark .bg-gray-900 {
+    background-color: #1a202c;
+}
+
+body.dark .bg-gray-950 {
+    background-color: #171923;
+}
+
+/* Кнопка очистки поиска */
+#clear-search {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--ios-text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: none;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: var(--ios-blur);
+    -webkit-backdrop-filter: var(--ios-blur);
+}
+
+#clear-search:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: translateY(-50%) scale(1.1);
+}
+
+#clear-search.show {
+    display: block;
+}
+
+.dark #clear-search {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dark #clear-search:hover {
+    background: rgba(255, 255, 255, 0.2);
+} 

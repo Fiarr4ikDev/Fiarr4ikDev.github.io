@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Шпаргалка: Демо-Экзамен</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap');
 
@@ -64,22 +66,22 @@
         .clear-btn.show { display: block; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 <!-- Header -->
-<header class="bg-white dark:bg-gray-900 shadow-md p-4 sticky top-0 z-10">
+<header class="bg-white shadow-md p-4 sticky top-0 z-10">
     <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-2xl font-semibold tracking-tight">Шпаргалка: Демо-Экзамен</h1>
+        <h1 class="text-2xl font-semibold tracking-tight text-gray-900">Шпаргалка: Демо-Экзамен</h1>
         <div class="flex items-center space-x-4">
-            <div class="search-container relative">
-                <input id="search" type="text" placeholder="Поиск шпаргалок..." class="p-2 pl-8 pr-8 rounded-lg w-full max-w-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                <svg class="absolute left-2 top-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="search-container">
+                <input id="search" type="text" placeholder="Поиск шпаргалок..." class="w-full">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
-                <svg id="clear-search" class="clear-btn w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="clear-search" class="clear-btn" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </div>
-            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
+            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 hover:bg-gray-300">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                 </svg>
@@ -91,33 +93,71 @@
 <!-- Content -->
 <main class="container mx-auto p-4 flex-1">
     <section id="mssql" class="content-block">
-        <h2 class="text-3xl font-semibold mb-4 text-gray-900 dark:text-white">MSSQL</h2>
-        <div class="card-ios light">
-            <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+        <h2 class="text-3xl font-semibold mb-6 text-gray-900">MSSQL</h2>
+        <div class="card-ios">
+            <h3 class="text-lg font-medium text-gray-700 mb-2">
                 Резервное копирование
             </h3>
             <pre><code class="language-sql">
 BACKUP DATABASE [YourDatabaseName]
 TO DISK = 'C:\Backup\YourDatabaseName.bak'
-        </code></pre>
-            <button class="copy-btn bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600">Копировать</button>
+WITH FORMAT, INIT, NAME = 'YourDatabaseName-Full Database Backup',
+SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO</code></pre>
+            <button class="copy-btn">Копировать</button>
         </div>
-        <div class="card-ios light">
-            <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+        <div class="card-ios">
+            <h3 class="text-lg font-medium text-gray-700 mb-2">
                 Восстановление
             </h3>
             <pre><code class="language-sql">
 RESTORE DATABASE [YourDatabaseName]
 FROM DISK = 'C:\Backup\YourDatabaseName.bak'
-        </code></pre>
-            <button class="copy-btn bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600">Копировать</button>
+WITH REPLACE, RECOVERY,
+MOVE 'YourDatabaseName' TO 'C:\Data\YourDatabaseName.mdf',
+MOVE 'YourDatabaseName_log' TO 'C:\Logs\YourDatabaseName_log.ldf'
+GO</code></pre>
+            <button class="copy-btn">Копировать</button>
+        </div>
+    </section>
+
+    <section id="csharp" class="content-block">
+        <h2 class="text-3xl font-semibold mb-6 text-gray-900">C#</h2>
+        <div class="card-ios">
+            <h3 class="text-lg font-medium text-gray-700 mb-2">
+                Подключение к базе данных
+            </h3>
+            <pre><code class="language-csharp">
+string connectionString = @"Server=ваш_сервер;Database=название_бд;User Id=sa;Password=пароль_при_создании_сервера;";</code></pre>
+            <button class="copy-btn">Копировать</button>
+        </div>
+        <div class="card-ios">
+            <h3 class="text-lg font-medium text-gray-700 mb-2">
+                Выполнение SQL-запроса
+            </h3>
+            <pre><code class="language-csharp">
+string query = @"тут запрос";
+SqlConnection connection = new SqlConnection(connectionString);  // connectionString - строка подключения к бд
+SqlDataAdapter adapter = new SqlDataAdapter(query, connection); // query - запрос
+
+DataTable table = new DataTable();
+adapter.Fill(table);
+dataGridViewData.DataSource = table; //dataGridViewData - имя DataGridView</code></pre>
+            <button class="copy-btn">Копировать</button>
         </div>
     </section>
 </main>
 
+<!-- Кнопка "Наверх" -->
+<button id="scroll-to-top" class="scroll-to-top" aria-label="Наверх">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+    </svg>
+</button>
+
 <!-- Footer -->
-<footer class="bg-gray-100 dark:bg-gray-900 p-4 text-center border-t border-gray-200 dark:border-gray-800">
-    <p class="text-base mb-2 text-gray-600 dark:text-gray-400">Демо гавно какое то</p>
+<footer class="bg-gray-100 p-4 text-center border-t border-gray-200">
+    <p class="text-base mb-2 text-gray-600">Демо гавно какое то</p>
 </footer>
 
 <!-- Scripts -->
@@ -125,129 +165,9 @@ FROM DISK = 'C:\Backup\YourDatabaseName.bak'
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.0.1/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.0.1/components/prism-css.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.0.1/components/prism-sql.min.js"></script>
-<script>
-    /**
-     * Filters content blocks by their h3 titles, scrolls to the first match, and manages clear button visibility.
-     */
-    const searchInput = document.getElementById('search');
-    const clearBtn = document.getElementById('clear-search');
-    const blocks = document.querySelectorAll('.card-ios');
-    const sections = document.querySelectorAll('section[id]');
-
-    searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase();
-        clearBtn.classList.toggle('show', query.length > 0);
-
-        let firstMatch = null;
-        blocks.forEach(block => {
-            const title = block.querySelector('h3').textContent.toLowerCase();
-            const isVisible = query ? title.includes(query) : true;
-            block.classList.toggle('content-hidden', !isVisible);
-            block.classList.toggle('content-block', isVisible);
-            if (isVisible && !firstMatch) {
-                firstMatch = block;
-            }
-        });
-
-        sections.forEach(section => {
-            const hasVisibleBlock = Array.from(section.querySelectorAll('.card-ios')).some(block =>
-                !block.classList.contains('content-hidden')
-            );
-            section.classList.toggle('content-hidden', !hasVisibleBlock);
-            section.classList.toggle('content-block', hasVisibleBlock);
-        });
-
-        if (firstMatch) {
-            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        blocks.forEach(block => {
-            const titleEl = block.querySelector('h3');
-            if (query && titleEl.textContent.toLowerCase().includes(query)) {
-                const regex = new RegExp(`(${query})`, 'gi');
-                titleEl.innerHTML = titleEl.textContent.replace(regex, '<span class="highlight">$1</span>');
-            } else {
-                titleEl.innerHTML = titleEl.textContent;
-            }
-        });
-    });
-
-    /**
-     * Clears the search input and resets the content display.
-     */
-    clearBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        clearBtn.classList.remove('show');
-        blocks.forEach(block => {
-            block.classList.remove('content-hidden');
-            block.classList.add('content-block');
-            const titleEl = block.querySelector('h3');
-            titleEl.innerHTML = titleEl.textContent;
-        });
-        sections.forEach(section => {
-            section.classList.remove('content-hidden');
-            section.classList.add('content-block');
-        });
-    });
-
-    /**
-     * Toggles between light and dark theme, saving preference to localStorage.
-     */
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    });
-
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    if (savedTheme === 'light') {
-        document.body.classList.remove('dark');
-    } else {
-        document.body.classList.add('dark');
-    }
-
-    /**
-     * Copies code block content to clipboard using Clipboard API or fallback method.
-     */
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const code = btn.previousElementSibling.querySelector('code').textContent;
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(code).then(() => {
-                    btn.textContent = 'Скопировано!';
-                    setTimeout(() => { btn.textContent = 'Копировать'; }, 2000);
-                }).catch(err => {
-                    fallbackCopy(code, btn);
-                });
-            } else {
-                fallbackCopy(code, btn);
-            }
-        });
-    });
-
-    /**
-     * Fallback method to copy text using execCommand.
-     * @param {string} text - Text to copy.
-     * @param {HTMLElement} button - Button element to update text.
-     */
-    function fallbackCopy(text, button) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            button.textContent = 'Скопировано!';
-            setTimeout(() => { button.textContent = 'Копировать'; }, 2000);
-        } catch (err) {
-            console.error('Fallback copy failed:', err);
-            alert('Не удалось скопировать текст. Попробуйте вручную.');
-        }
-        document.body.removeChild(textArea);
-    }
-</script>
+<script src="js/search.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/copy.js"></script>
+<script src="js/scroll.js"></script>
 </body>
 </html>
