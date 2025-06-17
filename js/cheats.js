@@ -22,6 +22,10 @@ const cheats = [
             {
                 title: "Выполнение SQL-запроса",
                 code: "string query = @\"тут запрос\";\nSqlConnection connection = new SqlConnection(connectionString);  // connectionString - строка подключения к бд\nSqlDataAdapter adapter = new SqlDataAdapter(query, connection); // query - запрос\n\nDataTable table = new DataTable();\nadapter.Fill(table);\ndataGridViewData.DataSource = table; //dataGridViewData - имя DataGridView"
+            },
+            {
+                title: "Выполнение SQL-запроса с параметром",
+                code: "string query = @\"тут запрос\";\nSqlConnection connection = new SqlConnection(connectionString);  // connectionString - строка подключения к бд\nSqlCommand command = new SqlCommand(query, connection);\ncommand.Parameters.AddWithValue(\"@параметр\", значение_параметра);\nSqlDataAdapter adapter = new SqlDataAdapter(query, connection); // query - запрос\n\nDataTable table = new DataTable();\nadapter.Fill(table);\ndataGridViewData.DataSource = table; //dataGridViewData - имя DataGridView"
             }
         ]
     }
