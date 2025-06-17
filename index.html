@@ -1,36 +1,85 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Шпаргалка для демо-экзамена</title>
+    <title>Шпаргалка: Демо-Экзамен</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet">
     <style>
-        .sidebar { transition: transform 0.3s ease; }
-        .sidebar-hidden { transform: translateX(-100%); }
-        @media (min-width: 1024px) { .sidebar-hidden { transform: none; } }
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap');
+
+        html {
+            font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif;
+        }
         .content-hidden { display: none; }
-        .content-block { display: block; }
-        .code-block { position: relative; }
-        .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; }
+        .content-block { display: block; animation: fadeLift 0.3s ease-out; }
+        .card-ios {
+            position: relative;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .dark .card-ios {
+            background: linear-gradient(135deg, #1e2a32, #2d3a45);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .card-ios:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        .card-ios.light {
+            background: linear-gradient(135deg, #ffffff, #f0f2f5);
+        }
+        .copy-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 6px 12px;
+            border-radius: 12px;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .copy-btn:hover {
+            transform: scale(1.05);
+        }
+        pre {
+            background-color: #000000;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 12px 0;
+            overflow-x: auto;
+            border: 1px solid #1a1a1a;
+        }
+        code {
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+        @keyframes fadeLift { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .highlight { background-color: #2a4494; border-radius: 4px; }
+        .search-container { transition: all 0.2s ease; position: relative; }
+        .search-container:focus-within { transform: scale(1.02); border-color: #007aff; }
+        .clear-btn { display: none; position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); cursor: pointer; }
+        .clear-btn.show { display: block; }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white min-h-screen flex flex-col">
 <!-- Header -->
-<header class="bg-blue-700 dark:bg-blue-900 text-white p-4 sticky top-0 z-10">
+<header class="bg-white dark:bg-gray-900 shadow-md p-4 sticky top-0 z-10">
     <div class="container mx-auto flex justify-between items-center">
-        <div class="flex items-center">
-            <button id="menu-toggle" class="lg:hidden mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        <h1 class="text-2xl font-semibold tracking-tight">Шпаргалка: Демо-Экзамен</h1>
+        <div class="flex items-center space-x-4">
+            <div class="search-container relative">
+                <input id="search" type="text" placeholder="Поиск шпаргалок..." class="p-2 pl-8 pr-8 rounded-lg w-full max-w-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <svg class="absolute left-2 top-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
-            </button>
-            <h1 class="text-xl font-bold">Шпаргалка: Демо-экзамен</h1>
-        </div>
-        <div class="flex items-center">
-            <input id="search" type="text" placeholder="Поиск..." class="p-2 rounded w-48 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-700">
-            <button id="theme-toggle" class="ml-4">
+                <svg id="clear-search" class="clear-btn w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                 </svg>
@@ -39,100 +88,105 @@
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="flex flex-1">
-    <!-- Sidebar -->
-    <nav id="sidebar" class="sidebar w-64 bg-white dark:bg-gray-800 p-4 fixed top-16 bottom-0 lg:static overflow-y-auto">
-        <ul class="space-y-2">
-            <li><a href="#python" class="block p-2 hover:bg-blue-100 dark:hover:bg-blue-900 rounded">Python</a></li>
-            <li><a href="#html-css" class="block p-2 hover:bg-blue-100 dark:hover:bg-blue-900 rounded">HTML & CSS</a></li>
-            <li><a href="#algorithms" class="block p-2 hover:bg-blue-100 dark:hover:bg-blue-900 rounded">Алгоритмы</a></li>
-        </ul>
-    </nav>
+<!-- Content -->
+<main class="container mx-auto p-4 flex-1">
+    <section id="mssql" class="content-block">
+        <h2 class="text-3xl font-semibold mb-4 text-gray-900 dark:text-white">MSSQL</h2>
+        <div class="card-ios light">
+            <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                Резервное копирование
+            </h3>
+            <pre><code class="language-sql">
+BACKUP DATABASE [YourDatabaseName]
+TO DISK = 'C:\Backup\YourDatabaseName.bak'
+        </code></pre>
+            <button class="copy-btn bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600">Копировать</button>
+        </div>
+        <div class="card-ios light">
+            <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                Восстановление
+            </h3>
+            <pre><code class="language-sql">
+RESTORE DATABASE [YourDatabaseName]
+FROM DISK = 'C:\Backup\YourDatabaseName.bak'
+        </code></pre>
+            <button class="copy-btn bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600">Копировать</button>
+        </div>
+    </section>
+</main>
 
-    <!-- Content -->
-    <main class="flex-1 p-4 lg:ml-64">
-        <section id="python" class="content-block">
-            <h2 class="text-2xl font-bold mb-4">Python</h2>
-            <div class="bg-white dark:bg-gray-800 p-4 rounded shadow mb-4 code-block">
-                <h3 class="text-lg font-semibold">Списки</h3>
-                <pre><code class="language-python">
-my_list = [1, 2, 3]
-my_list.append(4)  # Добавить элемент
-my_list.pop()      # Удалить последний элемент
-          </code></pre>
-                <button class="copy-btn bg-blue-500 text-white px-2 py-1 rounded text-sm">Копировать</button>
-            </div>
-            <div class="bg-white dark:bg-gray-800 p-4 rounded shadow mb-4 code-block">
-                <h3 class="text-lg font-semibold">Словари</h3>
-                <pre><code class="language-python">
-my_dict = {'key': 'value'}
-my_dict['new_key'] = 'new_value'  # Добавить
-del my_dict['key']                # Удалить
-          </code></pre>
-                <button class="copy-btn bg-blue-500 text-white px-2 py-1 rounded text-sm">Копировать</button>
-            </div>
-        </section>
-
-        <section id="html-css" class="content-hidden">
-            <h2 class="text-2xl font-bold mb-4">HTML & CSS</h2>
-            <div class="bg-white dark:bg-gray-800 p-4 rounded shadow mb-4 code-block">
-                <h3 class="text-lg font-semibold">Flexbox</h3>
-                <pre><code class="language-css">
-.container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-          </code></pre>
-                <button class="copy-btn bg-blue-500 text-white px-2 py-1 rounded text-sm">Копировать</button>
-            </div>
-        </section>
-
-        <section id="algorithms" class="content-hidden">
-            <h2 class="text-2xl font-bold mb-4">Алгоритмы</h2>
-            <div class="bg-white dark:bg-gray-800 p-4 rounded shadow mb-4 code-block">
-                <h3 class="text-lg font-semibold">Сортировка пузырьком</h3>
-                <pre><code class="language-python">
-def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-    return arr
-          </code></pre>
-                <button class="copy-btn bg-blue-500 text-white px-2 py-1 rounded text-sm">Копировать</button>
-            </div>
-        </section>
-    </main>
-</div>
+<!-- Footer -->
+<footer class="bg-gray-100 dark:bg-gray-900 p-4 text-center border-t border-gray-200 dark:border-gray-800">
+    <p class="text-base mb-2 text-gray-600 dark:text-gray-400">Демо гавно какое то</p>
+</footer>
 
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.0.1/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.0.1/components/prism-css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.0.1/components/prism-sql.min.js"></script>
 <script>
     /**
-     * Toggles the sidebar visibility on mobile devices.
+     * Filters content blocks by their h3 titles, scrolls to the first match, and manages clear button visibility.
      */
-    const menuToggle = document.getElementById('menu-toggle');
-    const sidebar = document.getElementById('sidebar');
-    menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('sidebar-hidden');
+    const searchInput = document.getElementById('search');
+    const clearBtn = document.getElementById('clear-search');
+    const blocks = document.querySelectorAll('.card-ios');
+    const sections = document.querySelectorAll('section[id]');
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        clearBtn.classList.toggle('show', query.length > 0);
+
+        let firstMatch = null;
+        blocks.forEach(block => {
+            const title = block.querySelector('h3').textContent.toLowerCase();
+            const isVisible = query ? title.includes(query) : true;
+            block.classList.toggle('content-hidden', !isVisible);
+            block.classList.toggle('content-block', isVisible);
+            if (isVisible && !firstMatch) {
+                firstMatch = block;
+            }
+        });
+
+        sections.forEach(section => {
+            const hasVisibleBlock = Array.from(section.querySelectorAll('.card-ios')).some(block =>
+                !block.classList.contains('content-hidden')
+            );
+            section.classList.toggle('content-hidden', !hasVisibleBlock);
+            section.classList.toggle('content-block', hasVisibleBlock);
+        });
+
+        if (firstMatch) {
+            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        blocks.forEach(block => {
+            const titleEl = block.querySelector('h3');
+            if (query && titleEl.textContent.toLowerCase().includes(query)) {
+                const regex = new RegExp(`(${query})`, 'gi');
+                titleEl.innerHTML = titleEl.textContent.replace(regex, '<span class="highlight">$1</span>');
+            } else {
+                titleEl.innerHTML = titleEl.textContent;
+            }
+        });
     });
 
     /**
-     * Filters content sections based on search input.
+     * Clears the search input and resets the content display.
      */
-    const searchInput = document.getElementById('search');
-    const sections = document.querySelectorAll('section[id]');
-    searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase();
+    clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        clearBtn.classList.remove('show');
+        blocks.forEach(block => {
+            block.classList.remove('content-hidden');
+            block.classList.add('content-block');
+            const titleEl = block.querySelector('h3');
+            titleEl.innerHTML = titleEl.textContent;
+        });
         sections.forEach(section => {
-            const text = section.textContent.toLowerCase();
-            section.classList.toggle('content-hidden', !text.includes(query));
-            section.classList.toggle('content-block', text.includes(query));
+            section.classList.remove('content-hidden');
+            section.classList.add('content-block');
         });
     });
 
@@ -146,21 +200,54 @@ def bubble_sort(arr):
     });
 
     // Load saved theme
-    if (localStorage.getItem('theme') === 'dark') {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.remove('dark');
+    } else {
         document.body.classList.add('dark');
     }
 
     /**
-     * Copies code block content to clipboard on button click.
+     * Copies code block content to clipboard using Clipboard API or fallback method.
      */
     document.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const code = btn.previousElementSibling.querySelector('code').textContent;
-            navigator.clipboard.writeText(code);
-            btn.textContent = 'Скопировано!';
-            setTimeout(() => { btn.textContent = 'Копировать'; }, 2000);
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code).then(() => {
+                    btn.textContent = 'Скопировано!';
+                    setTimeout(() => { btn.textContent = 'Копировать'; }, 2000);
+                }).catch(err => {
+                    fallbackCopy(code, btn);
+                });
+            } else {
+                fallbackCopy(code, btn);
+            }
         });
     });
+
+    /**
+     * Fallback method to copy text using execCommand.
+     * @param {string} text - Text to copy.
+     * @param {HTMLElement} button - Button element to update text.
+     */
+    function fallbackCopy(text, button) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            button.textContent = 'Скопировано!';
+            setTimeout(() => { button.textContent = 'Копировать'; }, 2000);
+        } catch (err) {
+            console.error('Fallback copy failed:', err);
+            alert('Не удалось скопировать текст. Попробуйте вручную.');
+        }
+        document.body.removeChild(textArea);
+    }
 </script>
 </body>
 </html>
