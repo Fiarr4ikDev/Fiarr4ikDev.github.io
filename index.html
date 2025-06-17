@@ -3,87 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Шпаргалка: Демо-Экзамен</title>
+    <title>SimpleTasks - Список задач</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link href="styles/main.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap');
-
-        html {
-            font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif;
-        }
-        .content-hidden { display: none; }
-        .content-block { display: block; animation: fadeLift 0.3s ease-out; }
-        .card-ios {
-            position: relative;
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .dark .card-ios {
-            background: linear-gradient(135deg, #1e2a32, #2d3a45);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-        .card-ios:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        }
-        .card-ios.light {
-            background: linear-gradient(135deg, #ffffff, #f0f2f5);
-        }
-        .copy-btn {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            padding: 6px 12px;
-            border-radius: 12px;
-            transition: background-color 0.2s, transform 0.2s;
-        }
-        .copy-btn:hover {
-            transform: scale(1.05);
-        }
-        pre {
-            background-color: #000000;
-            padding: 16px;
-            border-radius: 8px;
-            margin: 12px 0;
-            overflow-x: auto;
-            border: 1px solid #1a1a1a;
-        }
-        code {
-            color: #ffffff;
-            font-size: 0.95rem;
-        }
-        @keyframes fadeLift { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .highlight { background-color: #2a4494; border-radius: 4px; }
-        .search-container { transition: all 0.2s ease; position: relative; }
-        .search-container:focus-within { transform: scale(1.02); border-color: #007aff; }
-        .clear-btn { display: none; position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); cursor: pointer; }
-        .clear-btn.show { display: block; }
-    </style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 <!-- Header -->
 <header class="bg-white shadow-md p-4 sticky top-0 z-10">
     <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-2xl font-semibold tracking-tight text-gray-900">Шпаргалка: Демо-Экзамен</h1>
+        <h1 class="text-2xl font-semibold tracking-tight text-gray-900">SimpleTasks</h1>
         <div class="flex items-center space-x-4">
-            <div class="search-container">
-                <input id="search" type="text" placeholder="Поиск шпаргалок..." class="w-full">
-                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-                <svg id="clear-search" class="clear-btn" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </div>
             <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 hover:bg-gray-300">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+            </button>
+            <button id="secret-toggle" class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                 </svg>
             </button>
         </div>
@@ -91,46 +31,49 @@
 </header>
 
 <!-- Content -->
-<main class="container mx-auto p-4 flex-1">
-    <section id="mssql" class="content-block">
-        <h2 class="text-3xl font-semibold mb-6 text-gray-900">MSSQL</h2>
-        <div class="card-ios">
-            <h3 class="text-lg font-medium text-gray-700 mb-2">
-                Резервное копирование
-            </h3>
-            <pre><code class="language-sql">
+<main class="container mx-auto p-4">
+    <div id="content-wrapper" class="relative">
+        <!-- Основной контент -->
+        <div id="main-content" class="content-block hidden">
+            <section id="mssql" class="content-block">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-900">SQL Заметки</h2>
+                <div class="card-ios">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">
+                        Создание резервной копии
+                    </h3>
+                    <pre><code class="language-sql">
 BACKUP DATABASE [YourDatabaseName]
 TO DISK = 'C:\Backup\YourDatabaseName.bak'
 GO</code></pre>
-            <button class="copy-btn">Копировать</button>
-        </div>
-        <div class="card-ios">
-            <h3 class="text-lg font-medium text-gray-700 mb-2">
-                Восстановление
-            </h3>
-            <pre><code class="language-sql">
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <div class="card-ios">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">
+                        Восстановление из копии
+                    </h3>
+                    <pre><code class="language-sql">
 RESTORE DATABASE [YourDatabaseName]
 FROM DISK = 'C:\Backup\YourDatabaseName.bak'
 GO</code></pre>
-            <button class="copy-btn">Копировать</button>
-        </div>
-    </section>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
 
-    <section id="csharp" class="content-block">
-        <h2 class="text-3xl font-semibold mb-6 text-gray-900">C#</h2>
-        <div class="card-ios">
-            <h3 class="text-lg font-medium text-gray-700 mb-2">
-                Подключение к базе данных
-            </h3>
-            <pre><code class="language-csharp">
+            <section id="csharp" class="content-block">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-900">C# Заметки</h2>
+                <div class="card-ios">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">
+                        Подключение к базе данных
+                    </h3>
+                    <pre><code class="language-csharp">
 string connectionString = @"Server=ваш_сервер;Database=название_бд;User Id=sa;Password=пароль_при_создании_сервера;";</code></pre>
-            <button class="copy-btn">Копировать</button>
-        </div>
-        <div class="card-ios">
-            <h3 class="text-lg font-medium text-gray-700 mb-2">
-                Выполнение SQL-запроса
-            </h3>
-            <pre><code class="language-csharp">
+                    <button class="copy-btn">Копировать</button>
+                </div>
+                <div class="card-ios">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">
+                        Выполнение SQL-запроса
+                    </h3>
+                    <pre><code class="language-csharp">
 string query = @"тут запрос";
 SqlConnection connection = new SqlConnection(connectionString);  // connectionString - строка подключения к бд
 SqlDataAdapter adapter = new SqlDataAdapter(query, connection); // query - запрос
@@ -138,9 +81,28 @@ SqlDataAdapter adapter = new SqlDataAdapter(query, connection); // query - за�
 DataTable table = new DataTable();
 adapter.Fill(table);
 dataGridViewData.DataSource = table; //dataGridViewData - имя DataGridView</code></pre>
-            <button class="copy-btn">Копировать</button>
+                    <button class="copy-btn">Копировать</button>
+                </div>
+            </section>
         </div>
-    </section>
+
+        <!-- Затычка -->
+        <div id="placeholder-content" class="content-block">
+            <div class="editor-toolbar">
+                <div class="task-input-row flex w-full items-center gap-2">
+                    <input type="text" id="new-task" placeholder="Добавить новую задачу..." class="flex-1">
+                    <button id="add-task">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="tasks-container" class="space-y-2">
+                <!-- Задачи будут добавляться здесь -->
+            </div>
+        </div>
+    </div>
 </main>
 
 <!-- Кнопка "Наверх" -->
@@ -152,7 +114,7 @@ dataGridViewData.DataSource = table; //dataGridViewData - имя DataGridView</c
 
 <!-- Footer -->
 <footer class="bg-gray-100 p-4 text-center border-t border-gray-200">
-    <p class="text-base mb-2 text-gray-600">Демо гавно какое то</p>
+    <p class="text-base mb-2 text-gray-600">SimpleNotes - Простой блокнот для заметок</p>
 </footer>
 
 <!-- Scripts -->
@@ -160,9 +122,11 @@ dataGridViewData.DataSource = table; //dataGridViewData - имя DataGridView</c
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.0.1/components/prism-python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.0.1/components/prism-css.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.0.1/components/prism-sql.min.js"></script>
-<script src="js/search.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/copy.js"></script>
 <script src="js/scroll.js"></script>
+<script src="js/secret.js"></script>
+<script src="js/todo.js"></script>
+<script src="js/notepad.js"></script>
 </body>
 </html>
