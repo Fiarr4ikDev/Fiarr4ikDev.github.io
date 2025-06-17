@@ -101,8 +101,6 @@
             <pre><code class="language-sql">
 BACKUP DATABASE [YourDatabaseName]
 TO DISK = 'C:\Backup\YourDatabaseName.bak'
-WITH FORMAT, INIT, NAME = 'YourDatabaseName-Full Database Backup',
-SKIP, NOREWIND, NOUNLOAD, STATS = 10
 GO</code></pre>
             <button class="copy-btn">Копировать</button>
         </div>
@@ -113,9 +111,6 @@ GO</code></pre>
             <pre><code class="language-sql">
 RESTORE DATABASE [YourDatabaseName]
 FROM DISK = 'C:\Backup\YourDatabaseName.bak'
-WITH REPLACE, RECOVERY,
-MOVE 'YourDatabaseName' TO 'C:\Data\YourDatabaseName.mdf',
-MOVE 'YourDatabaseName_log' TO 'C:\Logs\YourDatabaseName_log.ldf'
 GO</code></pre>
             <button class="copy-btn">Копировать</button>
         </div>
