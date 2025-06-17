@@ -4,11 +4,11 @@ const cheats = [
         items: [
             {
                 title: "Создание резервной копии",
-                code: "BACKUP DATABASE [YourDatabaseName]\nTO DISK = 'C:\\Backup\\YourDatabaseName.bak'\nGO"
+                code: "BACKUP DATABASE [YourDatabaseName]\nTO DISK = 'C:\\Backup\\YourDatabaseName.bak'"
             },
             {
                 title: "Восстановление из копии",
-                code: "RESTORE DATABASE [YourDatabaseName]\nFROM DISK = 'C:\\Backup\\YourDatabaseName.bak'\nGO"
+                code: "RESTORE DATABASE [YourDatabaseName]\nFROM DISK = 'C:\\Backup\\YourDatabaseName.bak'"
             }
         ]
     },
